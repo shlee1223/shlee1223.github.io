@@ -58,7 +58,12 @@
   <!-- Coloris -->
   <link rel="stylesheet" href="assets/vendor/coloris/coloris.min.css" />
   <script src="assets/vendor/coloris/coloris.min.js"></script>
-
+  <script>
+      function goToKorean() {
+        var url = window.location.href; url = url.replaceAll("en", "ko"); location.href = url;
+      }
+  </script>
+  
   <style>
     :root {
       --base-font-family: system-ui, sans-serif;
