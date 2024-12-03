@@ -60,11 +60,11 @@
   <script src="assets/vendor/coloris/coloris.min.js"></script>
   <script>
       function goToKorean() {
-        var url = window.location.href; url = url.replaceAll("/en/", "/ko/"); url.replaceAll("Architecture.md", "Architecture_ko.md"); location.href = url;
+        var url = window.location.href; url = url.replaceAll("/en/", "/ko/"); url.replaceAll("Architecture.md", "Architecture_ko.md"); var cleanUrl = url.split('#')[0]; location.href = cleanUrl;
       };
 
       function goToEnglish() {
-        var url = window.location.href; url = url.replaceAll("/ko/", "/en/"); url.replaceAll("Architecture_ko.md", "Architecture.md"); location.href = url;
+        var url = window.location.href; url = url.replaceAll("/ko/", "/en/"); url.replaceAll("Architecture_ko.md", "Architecture.md"); var cleanUrl = url.split('#')[0]; location.href = cleanUrl;
       };
   </script>
   
