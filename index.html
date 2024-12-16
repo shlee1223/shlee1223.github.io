@@ -60,11 +60,15 @@
   <script src="assets/vendor/coloris/coloris.min.js"></script>
   <script>
       function goToKorean() {
-        var url = window.location.href; url = url.replaceAll("/en/", "/ko/"); url.replaceAll("Architecture.md", "Architecture_ko.md"); var cleanUrl = url.split('#')[0]; location.href = cleanUrl;
+        var url = window.location.href; url = url.replaceAll("locale=en", "locale=ko"); var cleanUrl = url.split('#')[0]; location.href = cleanUrl;
       };
 
       function goToEnglish() {
-        var url = window.location.href; url = url.replaceAll("/ko/", "/en/"); url.replaceAll("Architecture_ko.md", "Architecture.md"); var cleanUrl = url.split('#')[0]; location.href = cleanUrl;
+        var url = window.location.href; url = url.replaceAll("locale=ko", "locale=en");  var cleanUrl = url.split('#')[0]; location.href = cleanUrl;
+      };
+
+      function goToSelectedVersion(version) {
+        var url = window.location.href; url = url.replace(/version=[^&\s]*/g, 'version=' + version); var cleanUrl = url.split('#')[0]; location.href = cleanUrl;
       };
   </script>
   
@@ -129,7 +133,8 @@
     var editLinkText = 'Edit this Page';
 
     // Set standalone to true to permanently hide the Sidebar
-    var standalone = (!(getURLParameterByName('sidebar', null, null, window.location.href, true) === 'true' && getURLParameterByName('basePath')));
+    //var standalone = (!(getURLParameterByName('sidebar', null, null, window.location.href, true) === 'true' && getURLParameterByName('basePath')));
+    var standalone = false; // custom setting
 
     // Set ToC to true to permanently show page Table of Contents (Sidebar and Navbar must also be hidden)
     var ToC = false;
@@ -726,7 +731,8 @@
           setColorProperties('#' + linkColorDarkMode);
           document.documentElement.style.setProperty('--cover-button-primary-color', '#000000');
         } else {
-          const linkColor = getURLParameterByName(['link-color', 'linkColor'], null, null, window.location.href, true);
+          //const linkColor = getURLParameterByName(['link-color', 'linkColor'], null, null, window.location.href, true);
+          const linkcolor = 'FFA500'; // custom setting
 
           if (linkColor !== false) {
             setColorProperties('#' + linkColor);
@@ -745,7 +751,8 @@
         }
       } else {
         // light mode
-        const linkColor = getURLParameterByName(['link-color', 'linkColor'], null, null, window.location.href, true);
+        //const linkColor = getURLParameterByName(['link-color', 'linkColor'], null, null, window.location.href, true);
+        const linkColor = 'FFA500'; // custom setting
 
         document.documentElement.style.setProperty('--cover-button-primary-color', '#FFFFFF');
 
@@ -849,13 +856,17 @@
     window.$docsify = {
       // GENERAL SETTINGS
       // -----------------------------------------------------------------
-      name: 'Docsify-This',
+      name: 'DID Doc Architecture',
       // repo           : 'https://github.com/hibbitts-design/docsify-open-publishing-starter-kit/',
       // Rename homepage to README.md and set homepage to README.md to default to README file for Remote Docsify
-      homepage: 'intro.md',
+      homepage: new URLSearchParams(window.location.search).get('version') + '/CHANGELOG.md',
       // coverpage      : 'coverpage.md',
-      loadSidebar: !(getURLParameterByName(['standalone', 'embedded']) || standalone || getURLParameterByName('basePath')),
-      loadNavbar: !(getURLParameterByName(['standalone', 'embedded']) || !(getURLParameterByName('navbar')) || standalone || !navbar || false),
+      //loadSidebar: !(getURLParameterByName(['standalone', 'embedded']) || standalone || getURLParameterByName('basePath')),
+      loadSidebar: true, // custom setting
+      loadSidebar: 'sidebar/' + new URLSearchParams(window.location.search).get('version') + '/' + new URLSearchParams(window.location.search).get('locale') + '/sidebar.md', // custom setting 
+      //loadNavbar: !(getURLParameterByName(['standalone', 'embedded']) || !(getURLParameterByName('navbar')) || standalone || !navbar || false),
+      loadNavbar: true, // custom setting
+      loadNavbar: 'sidebar/navbar/' + new URLSearchParams(window.location.search).get('locale') + '/navbar.md', // custom setting
       externalLinkTarget: '_top',
       loadFooter: (getURLParameterByName('footer') || footer || false),
       ext: getFileExtension(getURLParameterByName('homepage', null, null, window.location.href, true)),
@@ -881,9 +892,11 @@
       maxLevel: 2,
       // Set subMaxLevel to 0 to remove automatic display of page table of contents (TOC) in Sidebar
       subMaxLevel: 2,
-      hideSidebar: (getURLParameterByName(['standalone', 'embedded']) || standalone || (getURLParameterByName('basePath')) && !(getURLParameterByName('sidebar'))),
+      //hideSidebar: (getURLParameterByName(['standalone', 'embedded']) || standalone || (getURLParameterByName('basePath')) && !(getURLParameterByName('sidebar'))),
+      hideSidebar: false, // custom setting
 
-      skipLink: (!(getURLParameterByName(['standalone', 'embedded']) || standalone || (getURLParameterByName('basePath')) && (!(getURLParameterByName('sidebar')))) || (getURLParameterByName('toc'))),
+      //skipLink: (!(getURLParameterByName(['standalone', 'embedded']) || standalone || (getURLParameterByName('basePath')) && (!(getURLParameterByName('sidebar')))) || (getURLParameterByName('toc'))),
+      skipLink: false, // custom setting
 
       search: 'auto', // default
 
@@ -911,7 +924,8 @@
             // ...
             // call `next(html)` when task is done.
 
-            if (window.$docsify['basePath']) {
+            //if (window.$docsify['basePath']) {
+            if (true) { // custom setting
 
               var htmlElement = document.createElement('div');
               htmlElement.innerHTML = html;
@@ -923,8 +937,8 @@
               url = window.location.href;
               url = url.replace('#/', '');
 
-              var currentBasePath = '';
-              currentBasePath = getURLParameterByName('basePath', null, null, window.location.href, true);
+              var currentBasePath = 'https://raw.githubusercontent.com/shlee1223/did-doc-architecture/refs/heads'; // custom setting
+              //currentBasePath = getURLParameterByName('basePath', null, null, window.location.href, true);
 
               // Will store array of URL parameters
               var paramArray = [];
@@ -1056,7 +1070,8 @@
 
           hook.beforeEach(function (html) {
 
-            if (window.$docsify['basePath']) {
+            //if (window.$docsify['basePath']) {
+            if(true) { // custom setting
 
               // Basic error handling (i.e. 404 - File not found error)
               const { file = '', response = {} } = vm.route || {};
@@ -1098,7 +1113,8 @@
                 url = vm.route.file
                   .replace('raw.githubusercontent.com', 'github.com')
                   .replace(/\/master/, '/blob/master')
-              } else if (window.$docsify['basePath']) {
+              //} else if (window.$docsify['basePath']) {
+              } else if(true) { // custom setting
                 url = getURLParameterByName(['edit-link', 'editLink'], null, null, window.location.href, true);
                 gitLinkRepoURL = url;
               } else {
@@ -1112,7 +1128,8 @@
               }
 
               editlinktextparm = getURLParameterByName(['edit-link-text', 'editLinkText'], null, null, window.location.href, true);
-              if (!(editlinktextparm === false) && !(window.$docsify['basePath'] === undefined)) {
+              //if (!(editlinktextparm === false) && !(window.$docsify['basePath'] === undefined)) {
+              if (!(editlinktextparm === false) && true) { // custom setting
                 editlinktextparm = editlinktextparm.replaceAll('%20', ' ');
                 editLinkText = editlinktextparm;
               }
@@ -1166,7 +1183,8 @@
 
           // Invoked on each page load after new HTML has been appended to the DOM
           hook.doneEach(function () {
-            if (window.$docsify['basePath']) {
+            //if (window.$docsify['basePath']) {
+            if(true) { // custom setting
               const docHead = document.head;
               const docBody = document.body;
 
@@ -1180,7 +1198,8 @@
               }
 
               // Set link for displayed site name
-              const appName = getURLParameterByName('name', null, null, window.location.href, true);
+              //const appName = getURLParameterByName('name', null, null, window.location.href, true);
+              const appName = 'DID Doc Architecture';
               if (appName) {
                 const appNameLink = document.querySelector('a.app-name-link');
                 appNameLink.setAttribute('href', '#/');
@@ -1284,7 +1303,8 @@
               }, SCROLL_DELAY);
             }
 
-            if (window.$docsify['basePath']) {
+            //if (window.$docsify['basePath']) {
+            if(true) { // custom setting
               return; // Exit if basePath is present
             }
 
@@ -1340,8 +1360,9 @@
               document.getElementById("styletoc").checked = true;
               document.getElementById("stylesidebar").checked = false;
             }
-
-            if (getURLParameterByName('sidebar') === true) {
+          
+            if(true) { // custom setting
+            //if (getURLParameterByName('sidebar') === true) {
               document.getElementById("stylecontentonly").checked = false;
               document.getElementById("styletoc").checked = false;
               document.getElementById("stylesidebar").checked = true;
@@ -1371,7 +1392,8 @@
               document.getElementById('lineheight').value = lineheight;
             }
 
-            linkcolor = getURLParameterByName(['link-color', 'linkColor'], null, null, window.location.href, true);
+            linkcolor = 'FFA500'; // custom setting
+            //linkcolor = getURLParameterByName(['link-color', 'linkColor'], null, null, window.location.href, true);
             if (linkcolor) {
               linkcolor = '#' + linkcolor;
               document.getElementById('linkcolor').value = linkcolor;
@@ -1441,7 +1463,8 @@
               document.getElementById("loadcoverpage").checked = true;
             }
 
-            if (getURLParameterByName('loadSidebar')) {
+            //if (getURLParameterByName('loadSidebar')) {
+            if(true) { // custom setting
               document.getElementById("loadcustomsidebar").checked = true;
             }
 
@@ -1455,7 +1478,7 @@
 
             siteName = getURLParameterByName('name', null, null, window.location.href, true);
             if (siteName) {
-              document.getElementById("siteName").value = siteName;
+              document.getElementById("siteName").value = "siteName";
             }
 
             subMaxLevel = getURLParameterByName('subMaxLevel', null, null, window.location.href, true);
@@ -1463,7 +1486,8 @@
               document.getElementById('subMaxLevel').value = subMaxLevel;
             }
 
-            if (getURLParameterByName(['search', 'searchbox'], null, null, window.location.href, true) === 'true') {
+            if(true) { // custom setting
+            //if (getURLParameterByName(['search', 'searchbox'], null, null, window.location.href, true) === 'true') {
               document.getElementById("enableSidebarsearch").checked = true;
             }
 
@@ -1522,24 +1546,17 @@
 
     // Credit to Beau Shaw for dymamic remote docsify technique
     // To render a Markdown file named ** README.md ** (the expected default name) the URL would be https://hibbitts-design.github.io/test-docsify-project-docs/?basePath=https://raw.githubusercontent.com/hibbitts-design/docsify-open-course-starter-kit/main
-    if (getURLParameterByName('basePath')) {
+    //if (getURLParameterByName('basePath')) {
+    if(true) { // custom setting
       const params = new URLSearchParams(window.location.search);
       params.forEach((value, key) => {
-        // TODO: Parse numbers?
-
-        // console.log(value, key);
-        if (key === 'basePath' && !(allowedDomains === '')) {
-          const { hostname } = new URL(value);
-          if (!(allowedDomains.includes(hostname))) {
-            alert('Only the domain(s) ' + allowedDomains + ' permitted for a Markdown source file URL.');
-            throw new Error('Only the domain ' + allowedDomains + ' permitted for a Markdown source file URL.');
-          } else {
-            window.$docsify[key] = convertToBoolean(value);
-          }
-        } else {
-          window.$docsify[key] = convertToBoolean(value);
-        }
+        window.$docsify[key] = convertToBoolean(value);
       });
+
+      var key = 'basePath'; // custom setting
+      var value = 'https://raw.githubusercontent.com/shlee1223/did-doc-architecture/refs/heads'; // custom setting
+      const { hostname } = new URL(value);
+      window.$docsify[key] = convertToBoolean(value);
     }
 
     // Convert to Boolean if true or false, otherwise return original value
@@ -1561,7 +1578,8 @@
     });
 
     // Check for Return Key with Web Page Builder
-    if (window.$docsify['basePath'] === undefined) {
+    //if (window.$docsify['basePath'] === undefined) {
+    if(false) { // custom setting
       function checkKey(e) {
         var key = e.keyCode || e.which;
         if (key == 13) {
@@ -1607,7 +1625,8 @@
 
   <!-- Load custom.css file only when displaying Markdown files -->
   <script>
-    if (window.$docsify['basePath']) {
+    //if (window.$docsify['basePath']) {
+    if (true) { // custom setting
       document.write('<link rel="stylesheet" type="text/css" href="assets/css/custom.css" />');
     }
   </script>
@@ -1615,7 +1634,8 @@
   <!-- Load default or custom favicon file -->
   <script>
     const favicon = getURLParameterByName('loadFavicon', null, null, window.location.href, true);
-    if ((favicon !== false) && getURLParameterByName('basePath')) {
+    if(false) { // custom setting
+    //if ((favicon !== false) && getURLParameterByName('basePath')) {
       const fileUrl = window.$docsify['basePath'] + '/' + favicon;
       checkIfFileExists(fileUrl)
         .then(exists => {
@@ -1657,11 +1677,13 @@
 
   <!-- Table of Contents Plugin -->
   <script>
-    if (getURLParameterByName('toc', null, null, window.location.href, true) === 'true' && getURLParameterByName('basePath') || ToC) {
+    //if (getURLParameterByName('toc', null, null, window.location.href, true) === 'true' && getURLParameterByName('basePath') || ToC) {
+    if (getURLParameterByName('toc', null, null, window.location.href, true) === 'true' || ToC) { // custom setting
       document.write('<link rel="stylesheet" type="text/css" href="assets/css/toc.css" />');
       document.write('<script src="assets/vendor/docsify/plugins/custom/toc.js"><\/script>');
     }
-    if (getURLParameterByName(['toc-narrow', 'tocNarrow'], null, null, window.location.href, true) === 'true' && getURLParameterByName('basePath')) {
+    //if (getURLParameterByName(['toc-narrow', 'tocNarrow'], null, null, window.location.href, true) === 'true' && getURLParameterByName('basePath')) {
+    if (getURLParameterByName(['toc-narrow', 'tocNarrow'], null, null, window.location.href, true) === 'true') { // customsetting
       document.write('<link rel="stylesheet" type="text/css" href="assets/css/toc-narrow.css" />');
       document.write('<script src="assets/vendor/docsify/plugins/custom/toc.js"><\/script>');
     }
@@ -1669,7 +1691,8 @@
 
 <!-- Font Awesome Plugin -->
 <script>
-  if (getURLParameterByName('svg-icons', null, null, window.location.href, true) === 'true' && getURLParameterByName('basePath')) {
+  //if (getURLParameterByName('svg-icons', null, null, window.location.href, true) === 'true' && getURLParameterByName('basePath')) {
+  if (getURLParameterByName('svg-icons', null, null, window.location.href, true) === 'true') { // custom setting
 
     // Create the link element
     const link = document.createElement("link");
@@ -1712,7 +1735,8 @@
 
   <!-- Optionally enable Hypothesis -->
   <script>
-    if (getURLParameterByName('hypothesis', null, null, window.location.href, true) === 'true' && getURLParameterByName('basePath')) {
+    //if (getURLParameterByName('hypothesis', null, null, window.location.href, true) === 'true' && getURLParameterByName('basePath')) {
+    if (getURLParameterByName('hypothesis', null, null, window.location.href, true) === 'true') { // custom setting
       document.write('<script async src="https://hypothes.is/embed.js"><\/script>');
     }
   </script>
@@ -1723,7 +1747,8 @@
 
   <!-- Check for headerweight, fontfamily, fontsize, lineheight, theme colors, and darkmode parameters -->
   <script>
-    if (!(window.$docsify['basePath'] === undefined)) {
+    //if (!(window.$docsify['basePath'] === undefined)) {
+    if(true) { // custom setting
 
       // Change header weight if headerweight parameter present
       headerweight = getURLParameterByName(['header-weight', 'headerWeight'], null, null, window.location.href, true);
@@ -1787,7 +1812,8 @@
 
   <!-- Zoom Image Plugin -->
   <script>
-    if (!(window.$docsify['basePath'] === undefined)) {
+    //if (!(window.$docsify['basePath'] === undefined)) {
+    if(true) { // custom setting
       if (getURLParameterByName(['zoom-images', 'zoomImages'], null, null, window.location.href, true) === 'true') {
         document.write('<script src="assets/vendor/docsify/plugins/zoom-image.min.js"><\/script>');
       }
@@ -1796,7 +1822,8 @@
 
   <!-- Search Plugin -->
   <script>
-    if (getURLParameterByName(['search', 'searchbox'], null, null, window.location.href, true) === 'true') {
+    if(true) { // custom setting
+    //if (getURLParameterByName(['search', 'searchbox'], null, null, window.location.href, true) === 'true') {
 
       // Docsify Search Plugin current release
       // document.write('<script src="assets/vendor/docsify/plugins/custom/search.min.js"><\/script>');
@@ -1814,13 +1841,15 @@
   <script src="//unpkg.com/docsify-scroll-to-top/dist/docsify-scroll-to-top.min.js"></script>
 
   <script>
-    if ((location.hostname.includes("docsify-this.net")) && (window.$docsify['basePath'] === undefined)) {
+    //if ((location.hostname.includes("docsify-this.net")) && (window.$docsify['basePath'] === undefined)) {
+    if (false) { // custom setting
       document.write('<script async src="https://www.googletagmanager.com/gtag/js?id=UA-19424343-37"><\/script>');
     }
   </script>
 
   <script>
-    if ((location.hostname.includes("docsify-this.net")) && (window.$docsify['basePath'] === undefined)) {
+    //if ((location.hostname.includes("docsify-this.net")) && (window.$docsify['basePath'] === undefined)) {
+    if (false) { // custom setting
       window.dataLayer = window.dataLayer || [];
       function gtag() { dataLayer.push(arguments); }
       gtag('js', new Date());
