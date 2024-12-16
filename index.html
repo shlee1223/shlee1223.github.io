@@ -869,7 +869,8 @@
       loadNavbar: 'sidebar/navbar/' + new URLSearchParams(window.location.search).get('locale') + '/navbar.md', // custom setting
       externalLinkTarget: '_top',
       loadFooter: (getURLParameterByName('footer') || footer || false),
-      ext: getFileExtension(getURLParameterByName('homepage', null, null, window.location.href, true)),
+      //ext: getFileExtension(getURLParameterByName('homepage', null, null, window.location.href, true)),
+      ext: true, // custom setting
       executeScript: true,
 
       // NAVIGATION ALIAS
