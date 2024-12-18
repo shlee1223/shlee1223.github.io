@@ -892,7 +892,7 @@
       // NAVIGATION ALIAS
       // -----------------------------------------------------------------
       alias: {
-        '/V1.0.0/(.*)': 'https://raw.githubusercontent.com/OmniOneID/did-doc-architecture/refs/heads/V1.0.0/$1' // supports regexp 
+        '/V1.0.0/(.*)': 'https://raw.githubusercontent.com/OmniOneID/did-doc-architecture/refs/heads/V1.0.0/$1'
       },
 
       scrollToTop: {
@@ -1126,14 +1126,21 @@
                 ].join('\n\n');
               }
 
+              var version = new URLSearchParams(window.location.search).get('version');
+
               if (/githubusercontent\.com/.test(vm.route.file)) {
-                url = vm.route.file
-                  .replace('raw.githubusercontent.com', 'github.com')
-                  .replace(/\/master/, '/blob/master')
+                fileName = vm.route.file
+                .replace('https://raw.githubusercontent.com/OmniOneID/did-doc-architecture/refs/heads/', '');
+
+                gitLinkRepoURL = 'https://github.com/shlee1223/did-doc-architecture/blob/' + fileName;
+                url = gitLinkRepoURL;
               //} else if (window.$docsify['basePath']) {
               } else if(true) { // custom setting
-                url = getURLParameterByName(['edit-link', 'editLink'], null, null, window.location.href, true);
-                gitLinkRepoURL = url;
+                fileName = vm.route.file
+                .replace('https://raw.githubusercontent.com/OmniOneID/did-doc-architecture/refs/heads/', '');
+
+                gitLinkRepoURL = 'https://github.com/shlee1223/did-doc-architecture/blob/' + fileName;
+                url = gitLinkRepoURL;
               } else {
                 if (gitLinkRepoURL.includes("github.com")) {
                   url = gitLinkRepoURL + '/blob/main/docs/' + vm.route.file
