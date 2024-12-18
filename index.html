@@ -852,6 +852,22 @@
       attributeFilter: ['href'] // filter to only observe changes to 'href' attributes
     });
 
+    // custom setting
+    function getCustomHomepageUrl() {
+      var version = new URLSearchParams(window.location.search).get('version');
+      var locale = new URLSearchParams(window.location.search).get('locale');
+
+      if(version == null) {
+        location.replace('/?locale=ko&version=V1.0.0');
+      } else {
+        if(locale == 'ko') {
+          return version + '/README_ko.md'; 
+        } else {
+          return version + '/README.md'; 
+        }
+      }
+    }
+ 
     // Docsify
     window.$docsify = {
       // GENERAL SETTINGS
@@ -859,7 +875,7 @@
       name: 'DID Doc Architecture',
       // repo           : 'https://github.com/hibbitts-design/docsify-open-publishing-starter-kit/',
       // Rename homepage to README.md and set homepage to README.md to default to README file for Remote Docsify
-      homepage: new URLSearchParams(window.location.search).get('version') + '/CHANGELOG.md',
+      homepage: getCustomHomepageUrl(),
       // coverpage      : 'coverpage.md',
       //loadSidebar: !(getURLParameterByName(['standalone', 'embedded']) || standalone || getURLParameterByName('basePath')),
       loadSidebar: true, // custom setting
