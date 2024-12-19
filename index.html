@@ -1127,19 +1127,15 @@
               }
 
               var version = new URLSearchParams(window.location.search).get('version');
+              fileName = vm.route.file
+              .replace('https://raw.githubusercontent.com/OmniOneID/did-doc-architecture/refs/heads/', '');
+
+              gitLinkRepoURL = 'https://github.com/shlee1223/did-doc-architecture/edit/' + fileName;
 
               if (/githubusercontent\.com/.test(vm.route.file)) {
-                fileName = vm.route.file
-                .replace('https://raw.githubusercontent.com/OmniOneID/did-doc-architecture/refs/heads/', '');
-
-                gitLinkRepoURL = 'https://github.com/shlee1223/did-doc-architecture/blob/' + fileName;
                 url = gitLinkRepoURL;
               //} else if (window.$docsify['basePath']) {
               } else if(true) { // custom setting
-                fileName = vm.route.file
-                .replace('https://raw.githubusercontent.com/OmniOneID/did-doc-architecture/refs/heads/', '');
-
-                gitLinkRepoURL = 'https://github.com/shlee1223/did-doc-architecture/blob/' + fileName;
                 url = gitLinkRepoURL;
               } else {
                 if (gitLinkRepoURL.includes("github.com")) {
