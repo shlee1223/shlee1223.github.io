@@ -57,6 +57,7 @@
 
   <!-- Coloris -->
   <link rel="stylesheet" href="assets/vendor/coloris/coloris.min.css" />
+
   <script src="assets/vendor/coloris/coloris.min.js"></script>
   <script>
       function goToKorean() {
@@ -853,7 +854,7 @@
     });
 
     // custom setting
-    function getCustomHomepageUrl() {
+    function getHomepageUrl() {
       var version = new URLSearchParams(window.location.search).get('version');
       var locale = new URLSearchParams(window.location.search).get('locale');
 
@@ -875,7 +876,7 @@
       name: 'DID Doc Architecture',
       // repo           : 'https://github.com/hibbitts-design/docsify-open-publishing-starter-kit/',
       // Rename homepage to README.md and set homepage to README.md to default to README file for Remote Docsify
-      homepage: getCustomHomepageUrl(),
+      homepage: getHomepageUrl(),
       // coverpage      : 'coverpage.md',
       //loadSidebar: !(getURLParameterByName(['standalone', 'embedded']) || standalone || getURLParameterByName('basePath')),
       loadSidebar: true, // custom setting
@@ -892,7 +893,23 @@
       // NAVIGATION ALIAS
       // -----------------------------------------------------------------
       alias: {
-        '/V1.0.0/(.*)': 'https://raw.githubusercontent.com/OmniOneID/did-doc-architecture/refs/heads/V1.0.0/$1'
+        '/V1.0.0/(.*)': 'https://raw.githubusercontent.com/shlee1223/did-doc-architecture/refs/heads/V1.0.0/$1',
+        '/V1.1.0/(.*)': 'https://raw.githubusercontent.com/shlee1223/did-doc-architecture/refs/heads/V1.1.0/$1'
+      },
+
+      markdown: {
+        renderer: {
+          link: function(href, title, text) {
+            // href에 '#'이 포함되어 있는지 확인
+            if (href.includes('#')) {
+              // '#' 앞에 '_'를 추가
+              href = href.replace('#', '#_'); // 목차를 정상 파싱하지 못하는 이슈로 인해 추가 2024.12.23
+            }
+            console.log("href : " + href)
+            // 기본 링크 렌더링
+            return this.origin.link.apply(this, [href, title, text]);
+          }
+        }
       },
 
       scrollToTop: {
@@ -1128,7 +1145,7 @@
 
               var version = new URLSearchParams(window.location.search).get('version');
               fileName = vm.route.file
-              .replace('https://raw.githubusercontent.com/OmniOneID/did-doc-architecture/refs/heads/', '');
+              .replace('https://raw.githubusercontent.com/shlee1223/did-doc-architecture/refs/heads/', '');
 
               gitLinkRepoURL = 'https://github.com/shlee1223/did-doc-architecture/edit/' + fileName;
 
