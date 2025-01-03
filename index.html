@@ -901,6 +901,11 @@
     }
 
     // custom setting
+    function getRawGithubUserContentURL() {
+      return getGitLinkRepoURL().replaceAll("https://github.com", "https://raw.githubusercontent.com");
+    }
+
+    // custom setting
     function getHomepageName() {
       var homepageName = 'DID Doc Architecture';
       return homepageName;
@@ -946,18 +951,26 @@
       // NAVIGATION ALIAS
       // -----------------------------------------------------------------
       alias: {
-        '/V1.0.0/(.*)': 'https://raw.githubusercontent.com/shlee1223/did-doc-architecture/refs/heads/V1.0.0/$1',
-        '/V1.1.0/(.*)': 'https://raw.githubusercontent.com/shlee1223/did-doc-architecture/refs/heads/V1.1.0/$1'
+        '/V1.0.0/(.*)': getRawGithubUserContentURL() + '/refs/heads/V1.0.0/$1',
+        '/V1.1.0/(.*)': getRawGithubUserContentURL() + '/refs/heads/V1.1.0/$1'
       },
 
       markdown: {
         renderer: {
           link: function(href, title, text) {
+            var version = new URLSearchParams(window.location.search).get('version');
+
             // href에 '#'이 포함되어 있는지 확인
+            console.log("href : " + href);
             if (href.includes('#')) {
               // '#' 앞에 '_'를 추가
               href = href.replace('#', '#_'); // 목차를 정상 파싱하지 못하는 이슈로 인해 추가 2024.12.23
             }
+
+            if (href.includes('.md') && !href.includes(version) && !href.includes("http://") && !href.includes("https://")) { // md 파일이지만 링크에 버전은 포함하지 않는 경우 그리고 절대 경로가 아닌 경우
+              href = version + "/" + href;
+            }
+
             // 기본 링크 렌더링
             return this.origin.link.apply(this, [href, title, text]);
           }
@@ -1199,7 +1212,7 @@
               fileName = vm.route.file
               .replace(getGitLinkRepoURL() + '/refs/heads/', '');
 
-              gitLinkRepoURL = getGitLinkRepoURL() + '/edit/' + fileName;
+              gitLinkRepoURL = getGitLinkRepoURL() + '/edit' + fileName;
 
               if (/githubusercontent\.com/.test(vm.route.file)) {
                 url = gitLinkRepoURL;
@@ -1643,7 +1656,7 @@
       });
 
       var key = 'basePath'; // custom setting
-      var value = 'https://raw.githubusercontent.com/shlee1223/did-doc-architecture/refs/heads'; // custom setting
+      var value = getRawGithubUserContentURL() + '/refs/heads'; // custom setting
       const { hostname } = new URL(value);
       window.$docsify[key] = convertToBoolean(value);
     }
@@ -1946,27 +1959,11 @@
       gtag('config', 'UA-19424343-37', { 'anonymize_ip': true });
     }
 
-    (function() { // 반드시 실행되는 익명함수
+    (function() {
       setInterval(function() {
         setSelectedNavLiActive();
       }, 1000);
     })();
-
-    /*
-    (function() { // 반드시 실행되는 익명함수
-      document.addEventListener('DOMContentLoaded', () => {
-          const sidebarContent = `
-            <div class="sidebar-nav" role="navigation" aria-label="primary"><ul><li><strong>문서 - v1.0.0</strong></li><li>아키텍처<ul><li><a href="#/V1.0.0/docs/architecture/Software%20Architecture_ko" title="소프트웨어 아키텍처">소프트웨어 아키텍처</a></li></ul></li><li>개념<ul><li><a href="#/V1.0.0/docs/concepts/JSON_serialization_ko" title="JSON 직렬화">JSON 직렬화</a></li><li><a href="#/V1.0.0/docs/concepts/Presentation%20of%20VP_ko" title="VP 제출">VP 제출</a></li><li><a href="#/V1.0.0/docs/concepts/User%20Registration_ko" title="사용자 등록">사용자 등록</a></li><li><a href="#/V1.0.0/docs/concepts/VC%20Issuance_ko" title="VC 발급">VC 발급</a></li><li><a href="#/V1.0.0/docs/concepts/blockchain_access_ko" title="블록체인 연동">블록체인 연동</a></li><li><a href="#/V1.0.0/docs/concepts/components_ko" title="Open DID 구성도">Open DID 구성도</a></li><li><a href="#/V1.0.0/docs/concepts/life_cycle_ko" title="Wallet 생명 주기">Wallet 생명 주기</a></li><li><a href="#/V1.0.0/docs/concepts/manage_pii_ko" title="PII 관리">PII 관리</a></li><li><a href="#/V1.0.0/docs/concepts/token_ko" title="Open DID Token">Open DID Token</a></li><li><a href="#/V1.0.0/docs/concepts/wallet_ko" title="월렛 설명">월렛 설명</a></li><li><a href="#/V1.0.0/docs/concepts/wallet_interface_ko" title="월렛 인터페이스">월렛 인터페이스</a></li><li><a href="#/V1.0.0/docs/concepts/wallet_lock_policy_ko" title="월렛 잠금">월렛 잠금</a></li><li><a href="#/V1.0.0/docs/concepts/wallet_policy_ko" title="월렛 정책">월렛 정책</a></li><li><a href="#/V1.0.0/docs/concepts/wallet_sw_architecture_ko" title="월렛 소프트웨어 아키텍쳐">월렛 소프트웨어 아키텍쳐</a></li></ul></li><li>데이터 표준<ul><li>데이터 스펙<ul><li><a href="#/V1.0.0/docs/data%20standard/data%20specification/Data%20Specification_ko" title="데이터 명세서">데이터 명세서</a></li></ul></li><li>DID Document 포맷<ul><li><a href="#/V1.0.0/docs/data%20standard/did%20document%20format/DID%20Document%20format_ko" title="DID Document 포맷">DID Document 포맷</a></li></ul></li><li>Verifiable Credential 포맷<ul><li><a href="#/V1.0.0/docs/data%20standard/verifiable%20credential%20format/Profile%20format_ko" title="Profile 포맷">Profile 포맷</a></li><li><a href="#/V1.0.0/docs/data%20standard/verifiable%20credential%20format/VC%20Schema%20format_ko" title="VC Schema 포맷">VC Schema 포맷</a></li><li><a href="#/V1.0.0/docs/data%20standard/verifiable%20credential%20format/VC%20format_ko" title="VC 포맷">VC 포맷</a></li><li><a href="#/V1.0.0/docs/data%20standard/verifiable%20credential%20format/VP%20format_ko" title="VP 포맷">VP 포맷</a></li></ul></li></ul></li><li>가이드<ul><li>API<ul><li><a href="#/V1.0.0/docs/guide/api/API%20Documentation%20Writing%20Guide_ko" title="OpenDID API 문서 작성 가이드">OpenDID API 문서 작성 가이드</a></li></ul></li><li>문서<ul><li><a href="#/V1.0.0/docs/guide/docs/write_document_guide" title="write_document_guide">write_document_guide</a></li></ul></li><li><a href="#/V1.0.0/docs/guide/glossary" title="용어집">용어집</a></li><li>OSD<ul><li><a href="#/V1.0.0/docs/guide/osd/OpenDID%20Schema%20Definition%20Language_ko" title="OpenDID Schema Definition Language">OpenDID Schema Definition Language</a></li></ul></li></ul></li><li>규약<ul><li><a href="#/V1.0.0/docs/rules/coding_style_ko" title="OpenDID 코드 적용 규약 참고 가이드">OpenDID 코드 적용 규약 참고 가이드</a></li><li><a href="#/V1.0.0/docs/rules/git_code_commit_rule_ko" title="커밋 메시지 가이드라인">커밋 메시지 가이드라인</a></li></ul></li><li>보안<ul><li><a href="#/V1.0.0/docs/security/MitM_ko" title="중간자 공격">중간자 공격</a></li><li><a href="#/V1.0.0/docs/security/authentication_ko" title="인증 및 보안채널 생성">인증 및 보안채널 생성</a></li></ul></li><li>기타<ul><li><a href="#/V1.0.0/README_ko" title="README">README</a></li><li><a href="#/V1.0.0/ROADMAP" title="ROADMAP">ROADMAP</a> </li><li><a href="#/V1.0.0/CHANGELOG" title="CHANGELOG">CHANGELOG</a></li><li><a href="#/V1.0.0/CLA" title="CLA">CLA</a></li><li><a href="#/V1.0.0/CODE_OF_CONDUCT" title="CODE_OF_CONDUCT">CODE_OF_CONDUCT</a></li><li><a href="#/V1.0.0/CONTRIBUTING" title="CONTRIBUTING">CONTRIBUTING</a></li><li><a href="#/V1.0.0/MAINTAINERS" title="MAINTAINERS">MAINTAINERS</a></li></ul></li><li><strong>OmniOne Open DID</strong><ul><li><a href="javascript:window.open('https://github.com/OmniOneID')" target="_top" title="GitHub Repository"><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f538.png?v8.png" alt="small_orange_diamond" class="emoji" loading="lazy">GitHub Repository</a></li><li><a href="javascript:window.open('https://opendid.omnione.net/community')" target="_top" title="Community"><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f538.png?v8.png" alt="small_orange_diamond" class="emoji" loading="lazy">Community</a></li><li><a href="javascript:window.open('https://www.didalliance.org')" target="_top" title="DID Alliance"><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f538.png?v8.png" alt="small_orange_diamond" class="emoji" loading="lazy">DID Alliance</a></li></ul></li></ul></div>
-          `;
-
-          // Sidebar DOM을 동적으로 추가
-          const sidebarElement = document.querySelector('.sidebar-nav');
-          if (sidebarElement) {
-              sidebarElement.innerHTML = sidebarContent;
-          }
-      });
-    })();
-    */
   </script>
 
 </body>
