@@ -573,14 +573,14 @@
               if (currentBasePath.includes("raw.githubusercontent.com") || currentBasePath.includes("raw.codeberg.page")) {
                 const images = Array.from(htmlElement.querySelectorAll('img'));
                 for (const image of images) {
-                  // console.log(image.getAttribute('src'));
+                  console.log(image.getAttribute('src'));
                   let url = image.getAttribute('src');
                   if (!(url.includes('://') > 0 || url.startsWith('//'))) {
                     // URL is relative
                     url = url.replace(/^\/+/g, '');
                     url = currentBasePath + '/' + url;
                     image.setAttribute('src', url);
-                    // console.log("changed src");
+                    console.log("changed src");
                   }
                 }
               }
