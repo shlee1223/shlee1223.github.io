@@ -348,7 +348,8 @@
       var locale = new URLSearchParams(window.location.search).get('locale');
 
       if(version == null) {
-        location.replace('/?locale=ko&version=V2.0.0');
+        var currentLocale = locale != null ? locale : 'ko';
+        location.replace('/?locale=' + currentLocale + '&version=V2.0.0');
       } else {
         if(locale == 'ko') {
           return version + '/README_ko.md'; 
