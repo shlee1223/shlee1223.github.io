@@ -386,6 +386,8 @@
           link: function(href, title, text) {
             var version = new URLSearchParams(window.location.search).get('version');
 
+            console.log("href : " + href);
+            
             if (href.includes('#')) {
               href = href.replace('#', '#_'); // Added due to an issue where the table of contents links inside the md file could not be created properly. 2024.12.23
             }
