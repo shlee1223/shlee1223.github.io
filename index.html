@@ -390,6 +390,7 @@
             
             if (href.includes('#')) {
               href = href.replace('#', '#_'); // Added due to an issue where the table of contents links inside the md file could not be created properly. 2024.12.23
+              console.log("replaced href : " + href);
             }
 
             if (href.includes('.md') && !href.includes(version) && !href.includes("http://") && !href.includes("https://")) { // Add parsing rule if it is an md file but the link does not include the version and is not an absolute path. 2024.01.02
