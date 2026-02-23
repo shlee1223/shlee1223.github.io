@@ -787,11 +787,11 @@
                   heading.id = '_' + heading.id;
                 }
               });
-              // Force _ prefix on sidebar TOC links
+              // Force _ prefix on sidebar auto-generated TOC links only
               const sidebarLinks = document.querySelectorAll('.sidebar-nav a[href*="#"]');
               sidebarLinks.forEach(function(link) {
                 var href = link.getAttribute('href');
-                if (href && href.includes('#') && !href.includes('#_')) {
+                if (href && href.match(/^#[^\/]/) && !href.startsWith('#_')) {
                   link.setAttribute('href', href.replace('#', '#_'));
                 }
               });
