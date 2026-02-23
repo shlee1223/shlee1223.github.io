@@ -414,17 +414,6 @@
 
             return this.origin.image.apply(this, [href, title, text]);
           }, 
-        },
-        slugify: function(text) {
-          var slug = text.toString()
-            .trim()
-            .toLowerCase()
-            .replace(/\s+/g, '-')
-            .replace(/[()]/g, '')
-            .replace(/[&+]/g, '-')
-            .replace(/-+/g, '-')
-            .replace(/^-|-$/g, '');
-          return '_' + slug;
         }
       },
 
@@ -789,6 +778,13 @@
                   iframe.classList.forEach(className => wrapperDiv.classList.add(className));
                   parentDiv.replaceChild(wrapperDiv, iframe);
                   wrapperDiv.appendChild(iframe);
+                }
+              });
+              // Force _ prefix on all heading IDs
+              const headings = document.querySelectorAll('.markdown-section h1[id], .markdown-section h2[id], .markdown-section h3[id], .markdown-section h4[id], .markdown-section h5[id], .markdown-section h6[id]');
+              headings.forEach(function(heading) {
+                if (heading.id && !heading.id.startsWith('_')) {
+                  heading.id = '_' + heading.id;
                 }
               });
           });
