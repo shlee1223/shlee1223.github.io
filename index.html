@@ -393,11 +393,8 @@
           link: function(href, title, text) {
             var version = new URLSearchParams(window.location.search).get('version');
 
-            console.log("href : " + href);
-            
             if (href.includes('#')) {
               href = href.replace('#', '#_'); // Added due to an issue where the table of contents links inside the md file could not be created properly. 2024.12.23
-              console.log("replaced href : " + href);
             }
 
             if (href.includes('.md') && !href.includes(version) && !href.includes("http://") && !href.includes("https://")) { // Add parsing rule if it is an md file but the link does not include the version and is not an absolute path. 2024.01.02
@@ -420,7 +417,41 @@
             }
 
             return this.origin.image.apply(this, [href, title, text]);
-          }, 
+          },
+          html: function(html) {
+            var version = new URLSearchParams(window.location.search).get('version');
+            var currentFullUrl = window.location.toString();
+
+            // Process img tags in HTML
+            html = html.replace(/<img([^>]*)\s+src=["']([^"']+)["']([^>]*)>/gi, function(match, beforeSrc, src, afterSrc) {
+              // Skip if already absolute path
+              if (src.includes("http://") || src.includes("https://")) {
+                return match;
+              }
+
+              // Process relative paths and add version + current directory
+              if ((src.includes('.png') || src.includes('.svg') || src.includes('.jpg') || src.includes('.jpeg') || src.includes('.gif')) && !src.includes(version)) {
+                var hashFragment = getHashFragment(currentFullUrl);
+                var middleDirectories = getMiddleDirectories(hashFragment);
+
+                // Handle different types of relative paths
+                if (src.startsWith('./')) {
+                  // Remove ./ and add version + current directory
+                  src = version + "/" + middleDirectories + src.substring(2);
+                } else if (src.startsWith('../')) {
+                  // Handle ../ paths - need to go up directories
+                  src = version + "/" + middleDirectories + src;
+                } else if (!src.startsWith('/')) {
+                  // Relative path without ./ prefix
+                  src = version + "/" + middleDirectories + src;
+                }
+              }
+
+              return '<div style="padding-top: 10px;"><img' + beforeSrc + ' src="' + getRawGithubUserContentURL() + "/" + src + '"' + afterSrc + '><div>';
+            });
+              
+            return this.origin.html ? this.origin.html.apply(this, [html]) : html;
+          }
         }
       },
 
@@ -584,14 +615,14 @@
               if (currentBasePath.includes("raw.githubusercontent.com") || currentBasePath.includes("raw.codeberg.page")) {
                 const images = Array.from(htmlElement.querySelectorAll('img'));
                 for (const image of images) {
-                  console.log(image.getAttribute('src'));
+                  // console.log(image.getAttribute('src'));
                   let url = image.getAttribute('src');
                   if (!(url.includes('://') > 0 || url.startsWith('//'))) {
                     // URL is relative
                     url = url.replace(/^\/+/g, '');
                     url = currentBasePath + '/' + url;
                     image.setAttribute('src', url);
-                    console.log("changed src");
+                    // console.log("changed src");
                   }
                 }
               }
@@ -652,7 +683,7 @@
 
               // Force - Remove HTML comments before rendering
               html = html.replace(/<!--[\s\S]*?-->/g, '');
-
+            
               var version = new URLSearchParams(window.location.search).get('version');
               fileName = vm.route.file
               .replace(getGitLinkRepoURL() + '/refs/heads/', '');
