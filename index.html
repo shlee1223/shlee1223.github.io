@@ -848,16 +848,17 @@
                   this.parentElement.classList.add('active');
                 });
               });
-            // updatw -
-setTimeout(function() {
-  var contentLinks = document.querySelectorAll('.markdown-section a[href*="?id="]');
-  contentLinks.forEach(function(link) {
+            // update -
+document.querySelector('.markdown-section').addEventListener('click', function(e) {
+  var link = e.target.closest('a[href*="?id="]');
+  if (link) {
     var href = link.getAttribute('href');
     if (href && href.includes('?id=') && !href.includes('?id=_')) {
-      link.setAttribute('href', href.replace('?id=', '?id=_'));
+      e.preventDefault();
+      window.location.href = href.replace('?id=', '?id=_');
     }
-  });
-}, 3000);
+  }
+});
           });
 
           hook.ready(function () {
