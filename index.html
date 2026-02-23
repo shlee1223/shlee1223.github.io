@@ -75,6 +75,7 @@
       font-size: 16px;
     }
 
+    /* Force */
     .sidebar-nav li.active > a[href*="?id=_"] {
       color: var(--sidebar-nav-link-color--active, #0374B5);
       font-weight: var(--sidebar-nav-link-font-weight--active, bold);
@@ -648,6 +649,9 @@
                   errorMessage,
                 ].join('\n\n');
               }
+
+              // Force - Remove HTML comments before rendering
+              html = html.replace(/<!--[\s\S]*?-->/g, '');
 
               var version = new URLSearchParams(window.location.search).get('version');
               fileName = vm.route.file
