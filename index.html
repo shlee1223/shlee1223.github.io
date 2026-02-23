@@ -75,7 +75,7 @@
       font-size: 16px;
     }
 
-    /* Force */
+    /* update - hover css */
     .sidebar-nav li.active > a[href*="?id=_"] {
       color: var(--sidebar-nav-link-color--active, #0374B5);
       font-weight: var(--sidebar-nav-link-font-weight--active, bold);
@@ -681,7 +681,7 @@
                 ].join('\n\n');
               }
 
-              // Force - Remove HTML comments before rendering
+              // update - Remove HTML comments before rendering
               html = html.replace(/<!--[\s\S]*?-->/g, '');
             
               var version = new URLSearchParams(window.location.search).get('version');
@@ -821,14 +821,14 @@
                   wrapperDiv.appendChild(iframe);
                 }
               });
-              // Force _ prefix on all heading IDs
+              // update - _ prefix on all heading IDs
               const headings = document.querySelectorAll('.markdown-section h1[id], .markdown-section h2[id], .markdown-section h3[id], .markdown-section h4[id], .markdown-section h5[id], .markdown-section h6[id]');
               headings.forEach(function(heading) {
                 if (heading.id && !heading.id.startsWith('_')) {
                   heading.id = '_' + heading.id;
                 }
               });
-              // Force _ prefix on sidebar auto-generated TOC links only
+              // update - _ prefix on sidebar auto-generated TOC links only
               const sidebarLinks = document.querySelectorAll('.sidebar-nav a[href*="?id="]');
               sidebarLinks.forEach(function(link) {
                 var href = link.getAttribute('href');
@@ -836,7 +836,7 @@
                   link.setAttribute('href', href.replace('?id=', '?id=_'));
                 }
               });
-              // Force Handle active state for TOC links
+              // update - Handle active state for TOC links
               const tocLinks = document.querySelectorAll('.sidebar-nav a[href*="?id=_"]');
               tocLinks.forEach(function(link) {
                 link.addEventListener('click', function() {
