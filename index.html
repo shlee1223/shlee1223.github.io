@@ -848,14 +848,16 @@
                   this.parentElement.classList.add('active');
                 });
               });
-              // update - _ prefix on in-page anchor links in content
-              const contentLinks = document.querySelectorAll('.markdown-section a[href*="?id="]');
-              contentLinks.forEach(function(link) {
-                var href = link.getAttribute('href');
-                if (href && href.includes('?id=') && !href.includes('?id=_')) {
-                  link.setAttribute('href', href.replace('?id=', '?id=_'));
-                }
-              });
+            // updatw -
+setTimeout(function() {
+  var contentLinks = document.querySelectorAll('.markdown-section a[href*="?id="]');
+  contentLinks.forEach(function(link) {
+    var href = link.getAttribute('href');
+    if (href && href.includes('?id=') && !href.includes('?id=_')) {
+      link.setAttribute('href', href.replace('?id=', '?id=_'));
+    }
+  });
+}, 3000);
           });
 
           hook.ready(function () {
