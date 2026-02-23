@@ -414,6 +414,17 @@
 
             return this.origin.image.apply(this, [href, title, text]);
           }, 
+        },
+        slugify: function(text) {
+          var slug = text.toString()
+            .trim()
+            .toLowerCase()
+            .replace(/\s+/g, '-')
+            .replace(/[()]/g, '')
+            .replace(/[&+]/g, '-')
+            .replace(/-+/g, '-')
+            .replace(/^-|-$/g, '');
+          return '_' + slug;
         }
       },
 
