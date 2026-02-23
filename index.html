@@ -849,17 +849,19 @@
                 });
               });
             // update -
-document.querySelector('.markdown-section').addEventListener('click', function(e) {
-  var link = e.target.closest('a[href*="?id="]');
-  if (link) {
-    var href = link.getAttribute('href');
-    if (href && href.includes('?id=') && !href.includes('?id=_')) {
-      e.preventDefault();
-      window.location.href = href.replace('?id=', '?id=_');
-    }
-  }
-});
           });
+
+          // foften
+          hook.ready(function() {
+  // Monitor URL changes and fix missing _ prefix
+  window.addEventListener('hashchange', function() {
+    var hash = window.location.hash;
+    if (hash.includes('?id=') && !hash.includes('?id=_')) {
+      window.location.hash = hash.replace('?id=', '?id=_');
+    }
+  });
+});
+          //forten
 
           hook.ready(function () {
 
