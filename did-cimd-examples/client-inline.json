@@ -1,0 +1,28 @@
+{
+  "client_id": "https://shlee1223.github.io/did-cimd-examples/client-inline.json",
+  "client_name": "did:cimd example (inline jwks)",
+  "client_uri": "https://shlee1223.github.io/did-cimd-examples/",
+  "redirect_uris": [
+    "https://shlee1223.github.io/did-cimd-examples/"
+  ],
+  "grant_types": [
+    "authorization_code"
+  ],
+  "response_types": [
+    "code"
+  ],
+  "token_endpoint_auth_method": "private_key_jwt",
+  "token_endpoint_auth_signing_alg": "EdDSA",
+  "jwks": {
+    "keys": [
+      {
+        "crv": "Ed25519",
+        "x": "ppCCnVkgpixQPej359A6KFFLPHvqjnUFaUYTPkNueeM",
+        "kty": "OKP",
+        "kid": "example-ed25519-1",
+        "use": "sig",
+        "alg": "EdDSA"
+      }
+    ]
+  }
+}
