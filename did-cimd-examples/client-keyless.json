@@ -1,0 +1,15 @@
+{
+  "client_id": "https://shlee1223.github.io/did-cimd-examples/client-keyless.json",
+  "client_name": "did:cimd example (keyless)",
+  "client_uri": "https://shlee1223.github.io/did-cimd-examples/",
+  "redirect_uris": [
+    "https://shlee1223.github.io/did-cimd-examples/"
+  ],
+  "grant_types": [
+    "authorization_code"
+  ],
+  "response_types": [
+    "code"
+  ],
+  "token_endpoint_auth_method": "none"
+}
